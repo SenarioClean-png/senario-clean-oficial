@@ -12,18 +12,19 @@ const vite = await createViteServer({
   appType: 'spa',
 });
 const app = createApp({ serveStatic: false });
-app.use(vite.middlewares);
 app.use(async (request, response, next) => {
-  if (request.path.startsWith('/api/')) return next();
+  if (request.path !== '/' && !request.path.endsWith('.html')) return next();
   try {
     const template = await fs.readFile(path.resolve('index.html'), 'utf8');
-    const html = await vite.transformIndexHtml(request.originalUrl, template);
-    response.status(200).set({ 'Content-Type': 'text/html' }).end(html);
+    // O Preview usa um proxy HTTPS que não mantém o WebSocket HMR do Vite.
+    // Os módulos continuam sendo transformados pelo middleware, mas o HTML
+    // é servido sem injetar /@vite/client e sem tentar abrir esse WebSocket.
+    response.status(200).set({ 'Content-Type': 'text/html' }).end(template);
   } catch (error) {
-    vite.ssrFixStacktrace(error as Error);
     next(error);
   }
 });
+app.use(vite.middlewares);
 const server = app.listen(port, '0.0.0.0', () => console.log(`Preview Senário Clean em http://0.0.0.0:${port}`));
 const stop = async () => { server.close(); await vite.close(); await closePool(); process.exit(0); };
 process.once('SIGTERM', stop);

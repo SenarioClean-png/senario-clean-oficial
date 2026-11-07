@@ -751,7 +751,8 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid 
 
 
 /* Conta do cliente e painel administrativo. */
-.account-action { min-width: 43px; border: 1px solid rgba(255,255,255,.55); border-radius: 999px; padding: 5px 9px; color: #fff; font-weight: 700; white-space: nowrap; }
+.account-action { min-width: 43px; border: 1px solid #fff8ec; border-radius: 999px; padding: 5px 10px; background: #fff8ec; color: #60452f; font-weight: 700; white-space: nowrap; box-shadow: 0 2px 7px rgba(41, 28, 18, .16); }
+.header-action.account-action:hover { opacity: 1; background: #fff; color: #4c3523; }
 .account-card, .admin-card { display: grid; gap: 15px; }
 .account-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; border-radius: 10px; background: #f2e9dc; }
 .account-tabs button { min-height: 38px; border: 0; border-radius: 7px; background: transparent; color: #7e6b59; font: inherit; font-size: 12px; cursor: pointer; }

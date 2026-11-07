@@ -1,0 +1,137 @@
+[
+  {
+    "id": "sofa",
+    "name": "Sofá",
+    "icon": "icons/sofa.png"
+  },
+  {
+    "id": "tapete",
+    "name": "Tapete",
+    "icon": "icons/tapete.png"
+  },
+  {
+    "id": "poltrona",
+    "name": "Poltrona",
+    "icon": "icons/poltrona.png"
+  },
+  {
+    "id": "cadeira",
+    "name": "Cadeira",
+    "icon": "icons/cadeira.png"
+  },
+  {
+    "id": "colchao",
+    "name": "Colchão",
+    "icon": "icons/colchao.png"
+  },
+  {
+    "id": "automovel",
+    "name": "Automóvel",
+    "icon": "icons/automovel.png"
+  },
+  {
+    "id": "puff",
+    "name": "Puff",
+    "icon": "icons/puff.png"
+  },
+  {
+    "id": "bebe-conforto",
+    "name": "Bebê conforto",
+    "icon": "icons/bebe-conforto.png"
+  },
+  {
+    "id": "carpete",
+    "name": "Carpete",
+    "icon": "icons/carpete.png"
+  },
+  {
+    "id": "carrinho-de-bebe",
+    "name": "Carrinho de bebê",
+    "icon": "icons/carrinho-de-bebe.png"
+  },
+  {
+    "id": "almofada",
+    "name": "Almofada",
+    "icon": "icons/almofada.png"
+  },
+  {
+    "id": "banqueta",
+    "name": "Banqueta",
+    "icon": "icons/banqueta.png"
+  },
+  {
+    "id": "box",
+    "name": "Box",
+    "icon": "icons/box.png"
+  },
+  {
+    "id": "cabeceira",
+    "name": "Cabeceira",
+    "icon": "icons/cabeceira.png"
+  },
+  {
+    "id": "cama-para-pet",
+    "name": "Cama para pet",
+    "icon": "icons/cama-para-pet.png"
+  },
+  {
+    "id": "canto-alemao",
+    "name": "Canto alemão",
+    "icon": "icons/canto-alemao.png"
+  },
+  {
+    "id": "chaise",
+    "name": "Chaise",
+    "icon": "icons/chaise.png"
+  },
+  {
+    "id": "diva",
+    "name": "Divã",
+    "icon": "icons/diva.png"
+  },
+  {
+    "id": "futton",
+    "name": "Futton",
+    "icon": "icons/futton.png"
+  },
+  {
+    "id": "longarina",
+    "name": "Longarina",
+    "icon": "icons/longarina.png"
+  },
+  {
+    "id": "moises",
+    "name": "Moisés",
+    "icon": "icons/moises.png"
+  },
+  {
+    "id": "namoradeira",
+    "name": "Namoradeira",
+    "icon": "icons/namoradeira.png"
+  },
+  {
+    "id": "parede-ou-teto-acarpetado",
+    "name": "Parede ou teto acarpetado",
+    "icon": "icons/parede-ou-teto-acarpetado.png"
+  },
+  {
+    "id": "pillow-top",
+    "name": "Pillow Top",
+    "icon": "icons/pillow-top.png"
+  },
+  {
+    "id": "protetor-acolchoado",
+    "name": "Protetor acolchoado",
+    "icon": "icons/protetor-acolchoado.png"
+  },
+  {
+    "id": "recamier",
+    "name": "Récamier",
+    "icon": "icons/recamier.png"
+  },
+  {
+    "id": "travesseiro",
+    "name": "Travesseiro",
+    "icon": "icons/travesseiro.png"
+  }
+]

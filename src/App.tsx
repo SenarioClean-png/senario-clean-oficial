@@ -261,7 +261,9 @@ export default function App() {
   const beginQuoteSend = () => {
     if (!currentUser) {
       setPendingSend(true);
-      setAccountTab('login');
+      // O orçamento só continua depois que o cliente cria a conta ou entra
+      // em uma conta existente; para novos clientes, abrir cadastro primeiro.
+      setAccountTab('register');
       setAccountPanel(true);
       return;
     }

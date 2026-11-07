@@ -327,7 +327,7 @@ export default function App() {
           <button type="button" className="header-action" onClick={() => openUtility('zip')} aria-label="CEP"><Icon name="pin" /><span>CEP</span></button>
           <button type="button" className="header-action" onClick={() => openUtility('recurrence')} aria-label="Recorrência"><Icon name="repeat" /><span>Recorrência</span></button>
           <button type="button" className="header-action" onClick={() => openUtility('coupon')} aria-label="Cupom"><Icon name="ticket" /><span>Cupom</span></button>
-          <button type="button" className="header-action account-action" onClick={() => setAccountPanel(true)} aria-label={currentUser ? 'Abrir minha conta' : 'Entrar ou criar conta'}><span>{currentUser ? 'Conta' : 'Entrar'}</span></button>
+          <button type="button" className="header-action account-action" onClick={() => setAccountPanel(true)} aria-label={currentUser ? 'Abrir minha conta' : 'Fazer login'}><span>{currentUser ? 'Minha conta' : 'Fazer login'}</span></button>
           <button type="button" className="header-cart" onClick={() => setScrollTarget('cart')} aria-label={`Abrir carrinho, ${itemCount} ${itemCount === 1 ? 'item' : 'itens'}`}>
             <Icon name="cart" size={21} /><span className="cart-count" aria-hidden="true">{itemCount}</span>
           </button>

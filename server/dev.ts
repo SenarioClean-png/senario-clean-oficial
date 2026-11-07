@@ -4,7 +4,6 @@ import { createServer as createViteServer } from 'vite';
 import { ensureSchema, closePool } from './db.js';
 import { createApp } from './index.js';
 
-process.env.COOKIE_SECURE ??= 'false';
 const port = Number(process.env.PORT ?? 3000);
 
 await ensureSchema();

@@ -22,6 +22,12 @@ export async function ensureSchema() {
     for (const statement of sql.split(';').map((part) => part.trim()).filter(Boolean)) {
       await connection.query(statement);
     }
+    const [columns] = await connection.query<RowDataPacket[]>(
+      "SELECT COLUMN_NAME FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'customer_quotes' AND COLUMN_NAME = 'status'",
+    );
+    if (!columns.length) {
+      await connection.query("ALTER TABLE customer_quotes ADD COLUMN status ENUM('pending', 'contracted') NOT NULL DEFAULT 'pending' AFTER payload");
+    }
   } finally {
     connection.release();
   }

@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import express, { type Request, type Response } from 'express';
-import type { ResultSetHeader } from 'mysql2';
+import type { ResultSetHeader, RowDataPacket } from 'mysql2';
 import { z } from 'zod';
 import { closePool, ensureSchema, getPool, type AccountRow } from './db.js';
 import { createSession, currentUser, issueCsrf, limited, logout, normalizePhone, passwordHash, passwordMatches, requireAdmin, requireCsrf, requireUser, validPhone, validPin } from './auth.js';
@@ -13,6 +13,7 @@ const publicPath = path.resolve('public');
 
 const authInput = z.object({ phone: z.string().min(1).max(30), pin: z.string().min(1).max(20) });
 const quoteInput = z.object({ mode: z.enum(['home', 'company']), items: z.array(z.unknown()).min(1).max(50), zip: z.string().max(20), coupon: z.string().max(80), company: z.record(z.string()).optional(), message: z.string().max(20000) });
+const quoteStatusInput = z.object({ status: z.enum(['pending', 'contracted']) });
 
 function clientIp(request: Request) {
   return request.ip || request.socket.remoteAddress || 'unknown';
@@ -93,8 +94,36 @@ export function createApp(options: { serveStatic?: boolean } = {}) {
   app.get('/api/admin/customers', async (request, response) => {
     const admin = await requireAdmin(request, response);
     if (!admin) return;
-    const [rows] = await getPool().execute<(AccountRow & { quote_count: number; created_at: Date })[]>('SELECT a.phone, a.role, a.created_at, COUNT(q.id) AS quote_count FROM customer_accounts a LEFT JOIN customer_quotes q ON q.customer_id = a.id GROUP BY a.id, a.phone, a.role, a.created_at ORDER BY a.created_at DESC');
-    response.json({ customers: rows.map((row) => ({ phone: row.phone, role: row.role, quoteCount: Number(row.quote_count), createdAt: row.created_at })) });
+    const [rows] = await getPool().execute<(AccountRow & { quote_count: number; contracted_count: number; created_at: Date })[]>('SELECT a.phone, a.role, a.created_at, COUNT(q.id) AS quote_count, COALESCE(SUM(q.status = \'contracted\'), 0) AS contracted_count FROM customer_accounts a LEFT JOIN customer_quotes q ON q.customer_id = a.id GROUP BY a.id, a.phone, a.role, a.created_at ORDER BY a.created_at DESC');
+    response.json({ customers: rows.map((row) => ({ phone: row.phone, role: row.role, quoteCount: Number(row.quote_count), contractedCount: Number(row.contracted_count), createdAt: row.created_at })) });
+  });
+
+  app.get('/api/admin/quotes', async (request, response) => {
+    const admin = await requireAdmin(request, response);
+    if (!admin) return;
+    const [rows] = await getPool().execute<(RowDataPacket & { id: number; phone: string; payload: string | Record<string, unknown>; status: 'pending' | 'contracted'; created_at: Date })[]>('SELECT q.id, a.phone, q.payload, q.status, q.created_at FROM customer_quotes q JOIN customer_accounts a ON a.id = q.customer_id ORDER BY q.created_at DESC');
+    response.json({ quotes: rows.map((row) => {
+      const payload = typeof row.payload === 'string' ? JSON.parse(row.payload) as Record<string, unknown> : row.payload;
+      return { id: Number(row.id), phone: row.phone, status: row.status, message: typeof payload.message === 'string' ? payload.message : '', createdAt: row.created_at };
+    }) });
+  });
+
+  app.patch('/api/admin/quotes/:id', async (request, response) => {
+    if (!requireCsrf(request, response)) return;
+    const admin = await requireAdmin(request, response);
+    if (!admin) return;
+    const id = Number(request.params.id);
+    const parsed = quoteStatusInput.safeParse(request.body);
+    if (!Number.isSafeInteger(id) || id < 1 || !parsed.success) {
+      response.status(400).json({ error: 'Status de orçamento inválido.' });
+      return;
+    }
+    const [result] = await getPool().execute<ResultSetHeader>('UPDATE customer_quotes SET status = ? WHERE id = ?', [parsed.data.status, id]);
+    if (!result.affectedRows) {
+      response.status(404).json({ error: 'Orçamento não encontrado.' });
+      return;
+    }
+    response.json({ ok: true, status: parsed.data.status });
   });
 
   if (serveStatic) {

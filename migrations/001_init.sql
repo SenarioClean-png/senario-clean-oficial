@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS customer_quotes (
   id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   customer_id BIGINT UNSIGNED NOT NULL,
   payload JSON NOT NULL,
+  status ENUM('pending', 'contracted') NOT NULL DEFAULT 'pending',
   created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   INDEX idx_customer_quotes_customer_created (customer_id, created_at),
   CONSTRAINT fk_customer_quotes_customer FOREIGN KEY (customer_id) REFERENCES customer_accounts(id) ON DELETE CASCADE

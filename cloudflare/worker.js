@@ -58,7 +58,7 @@ function token(bytes=24) { const a=new Uint8Array(bytes); crypto.getRandomValues
 function b64(bytes) { return btoa(String.fromCharCode(...new Uint8Array(bytes))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,''); }
 function bytes(s) { const p=s.replace(/-/g,'+').replace(/_/g,'/'); const bin=atob(p+'='.repeat((4-p.length%4)%4)); return Uint8Array.from(bin,c=>c.charCodeAt(0)); }
 async function sha256(value) { return b64(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value))); }
-async function hashPin(pin) { const salt=token(16); const key=await crypto.subtle.importKey('raw',new TextEncoder().encode(pin),'PBKDF2',false,['deriveBits']); const bits=await crypto.subtle.deriveBits({name:'PBKDF2',salt:bytes(salt),iterations:120000,hash:'SHA-256'},key,256); return 'pbkdf2$120000$'+salt+'$'+b64(bits); }
+async function hashPin(pin) { const salt=token(16); const key=await crypto.subtle.importKey('raw',new TextEncoder().encode(pin),'PBKDF2',false,['deriveBits']); const bits=await crypto.subtle.deriveBits({name:'PBKDF2',salt:bytes(salt),iterations:100000,hash:'SHA-256'},key,256); return 'pbkdf2$100000$'+salt+'$'+b64(bits); }
 async function matchesPin(pin, stored) { try { const [,iterations,salt,expected]=stored.split('$'); const key=await crypto.subtle.importKey('raw',new TextEncoder().encode(pin),'PBKDF2',false,['deriveBits']); const bits=await crypto.subtle.deriveBits({name:'PBKDF2',salt:bytes(salt),iterations:Number(iterations),hash:'SHA-256'},key,256); return b64(bits)===expected; } catch { return false; } }
 function phone(value) { return String(value||'').replace(/\D/g,''); }
 function validPhone(value) { return /^\d{10,15}$/.test(value); }

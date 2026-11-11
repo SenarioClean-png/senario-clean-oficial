@@ -789,7 +789,9 @@ button:focus-visible, input:focus-visible, a:focus-visible { outline: 3px solid 
 .status-select.contracted { border-color: #b7d8c2; background: #edf9f0; color: #277044; }
 .status-select:disabled { opacity: .55; }
 @media (max-width: 620px) {
-  .account-action { min-width: 39px; }
+  .account-action { width: auto !important; min-width: 58px; height: 32px; padding: 5px 9px; justify-content: center; }
+  .account-action span { display: inline !important; font-size: 0; line-height: 1; }
+  .account-action span::after { content: 'Login'; font-size: 10px; }
   .admin-heading h2 { font-size: 19px; }
   .admin-summary { gap: 6px; }
   .admin-summary div { padding: 10px 8px; }
